@@ -9,7 +9,9 @@ class Admin extends Authenticatable
 {
     use Notifiable;
 
-    // ✅ Laravel رح يفهم جدول admins تلقائيًا، فما في داعي لتحديد $table
     protected $fillable = ['name', 'email', 'password'];
     protected $hidden = ['password', 'remember_token'];
+    
+    // إضافة هذا السطر إذا بدنا نستخدم الحقول الجديدة
+    // protected $dates = ['last_login_at'];
 }

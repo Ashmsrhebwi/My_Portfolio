@@ -3,33 +3,35 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\HeroController;
-// use App\Http\Controllers\Admin\WorkController;
-use App\Models\Hero;
-use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\StatisticController;
+use App\Http\Controllers\Admin\WorkController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\AdminController; // ← إضافة هذا السطر
+use App\Models\Hero;
+    use App\Http\Controllers\Frontend\HomeController;
 
 // Landing page
 Route::get('/', function () {
     $hero = Hero::first();
     return view('frontend.landing', compact('hero'));
 });
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    
 // Admin routes
 Route::prefix('admin')->group(function () {
 
     // Authentication
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [AuthController::class, 'login'])->name('admin.login.submit');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('admin.logout');
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('admin.dashboard.login');
+    Route::post('/login', [AuthController::class, 'login'])->name('admin.dashboard.login.submit');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('admin.dashboard.logout');
 
     // OTP Verification
-    Route::get('/verify-otp', [AuthController::class, 'showOtpForm'])->name('admin.verify.otp.form');
-    Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('admin.verify.otp');
+    Route::get('/verify-otp', [AuthController::class, 'showOtpForm'])->name('admin.dashboard.verify.otp.form');
+    Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('admin.dashboard.verify.otp');
 
     // Dashboard
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard.dashboard');
 
     // HERO management
     Route::get('/hero/edit', [HeroController::class, 'edit'])->name('admin.hero.edit');
@@ -38,14 +40,16 @@ Route::prefix('admin')->group(function () {
     // Download CV
     Route::get('/hero/download-cv/{file}', [HeroController::class, 'downloadCv'])->name('hero.downloadCv');
 
-    Route::get('/statistics', [\App\Http\Controllers\Admin\StatisticController::class, 'index'])->name('admin.statistics.index');
-    Route::get('/statistics/create', [\App\Http\Controllers\Admin\StatisticController::class, 'create'])->name('admin.statistics.create');
-    Route::post('/statistics', [\App\Http\Controllers\Admin\StatisticController::class, 'store'])->name('admin.statistics.store');
-    Route::get('/statistics/{id}/edit', [\App\Http\Controllers\Admin\StatisticController::class, 'edit'])->name('admin.statistics.edit');
-    Route::put('/statistics/{id}', [\App\Http\Controllers\Admin\StatisticController::class, 'update'])->name('admin.statistics.update');
-    Route::delete('/statistics/{id}', [\App\Http\Controllers\Admin\StatisticController::class, 'destroy'])->name('admin.statistics.delete');
+    // Statistics
+    Route::get('/statistics', [StatisticController::class, 'index'])->name('admin.statistics.index');
+    Route::get('/statistics/create', [StatisticController::class, 'create'])->name('admin.statistics.create');
+    Route::post('/statistics', [StatisticController::class, 'store'])->name('admin.statistics.store');
+    Route::get('/statistics/{id}/edit', [StatisticController::class, 'edit'])->name('admin.statistics.edit');
+    Route::put('/statistics/{id}', [StatisticController::class, 'update'])->name('admin.statistics.update');
+    Route::delete('/statistics/{id}', [StatisticController::class, 'destroy'])->name('admin.statistics.delete');
 
-    Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class)->names([
+    // Services
+    Route::resource('services', ServiceController::class)->names([
         'index' => 'admin.services.index',
         'create' => 'admin.services.create',
         'store' => 'admin.services.store',
@@ -53,7 +57,9 @@ Route::prefix('admin')->group(function () {
         'update' => 'admin.services.update',
         'destroy' => 'admin.services.destroy',
     ]);
-    Route::resource('works', \App\Http\Controllers\Admin\WorkController::class)->names([
+
+    // Works
+    Route::resource('works', WorkController::class)->names([
         'index' => 'admin.works.index',
         'create' => 'admin.works.create',
         'store' => 'admin.works.store',
@@ -61,6 +67,17 @@ Route::prefix('admin')->group(function () {
         'update' => 'admin.works.update',
         'destroy' => 'admin.works.destroy',
     ]);
-    
+
+    // Contact
     Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+    // ========== إضافة مسارات Admins هنا ==========
+    Route::prefix('admins')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.admins.index');
+        Route::get('/create', [AdminController::class, 'create'])->name('admin.admins.create');
+        Route::post('/', [AdminController::class, 'store'])->name('admin.admins.store');
+        Route::get('/{id}/edit', [AdminController::class, 'edit'])->name('admin.admins.edit');
+        Route::put('/{id}', [AdminController::class, 'update'])->name('admin.admins.update');
+        Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admin.admins.destroy');
+    });
 });

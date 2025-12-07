@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('admin.login');
+        return view('admin.dashboard.login');
     }
 
     public function login(Request $request)
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
             session(['otp_email' => $admin->email]);
 
-            return redirect()->route('admin.verify.otp.form')
+            return redirect()->route('admin.dashboard.verify.otp.form')
                              ->with('success', 'تم إرسال كود التحقق إلى بريدك الإلكتروني.');
         }
 
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
     public function showOtpForm()
     {
-        return view('admin.verify-otp');
+        return view('admin.dashboard.verify-otp');
     }
 
     public function verifyOtp(Request $request)
@@ -69,7 +69,7 @@ class AuthController extends Controller
         $admin = Admin::where('email', $email)->first();
 
         if (!$admin) {
-            return redirect()->route('admin.login')->with('error', 'Session expired, please login again.');
+            return redirect()->route('admin.dashboard.login')->with('error', 'Session expired, please login again.');
         }
 
         if ($admin->otp_code == $request->otp && $admin->otp_expires_at > now()) {
@@ -79,7 +79,7 @@ class AuthController extends Controller
             $admin->save();
 
             Auth::guard('admin')->login($admin);
-            return redirect()->route('admin.dashboard')->with('success', 'تم تسجيل الدخول بنجاح');
+            return redirect()->route('admin.dashboard.dashboard')->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
         return back()->with('error', 'رمز التحقق غير صحيح أو منتهي الصلاحية.');
@@ -88,10 +88,10 @@ class AuthController extends Controller
     public function dashboard()
     {
         if (!Auth::guard('admin')->check()) {
-            return redirect()->route('admin.login');
+            return redirect()->route('admin.dashboard.login');
         }
 
-        return view('admin.dashboard');
+        return view('admin.dashboard.dashboard');
     }
 
     public function logout(Request $request)
@@ -99,6 +99,6 @@ class AuthController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('admin.login');
+        return redirect()->route('admin.dashboard.login');
     }
 }

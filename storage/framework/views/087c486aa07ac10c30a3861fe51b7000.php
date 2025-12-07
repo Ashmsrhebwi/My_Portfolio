@@ -4,7 +4,7 @@
 <?php $__env->startSection('title', 'Add Work'); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="card">
+<div class="card create-edit-card">
     <h1>Add New Work</h1>
     <p class="text-muted">Create a new project for your portfolio</p>
 
@@ -69,125 +69,6 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('styles'); ?>
-<style>
-    .card {
-        background: var(--dark-card);
-        border-radius: var(--border-radius);
-        padding: 30px;
-        border: 1px solid var(--border);
-        max-width: 800px;
-        margin: 0 auto;
-    }
-
-    h1 {
-        color: var(--primary-light);
-        margin-bottom: 10px;
-        font-size: 28px;
-    }
-
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 24px;
-        border-radius: var(--border-radius);
-        text-decoration: none;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        transition: var(--transition);
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        color: white;
-    }
-
-    .btn-secondary {
-        background: var(--border);
-        color: var(--text);
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--text);
-        font-weight: 500;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 12px 16px;
-        border-radius: var(--border-radius);
-        border: 1px solid var(--border);
-        background: rgba(30, 41, 59, 0.5);
-        color: var(--text);
-        font-size: 15px;
-    }
-
-    .form-control:focus {
-        outline: none;
-        border-color: var(--primary);
-    }
-
-    textarea.form-control {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .form-actions {
-        display: flex;
-        gap: 12px;
-        margin-top: 30px;
-        flex-wrap: wrap;
-    }
-
-    .text-muted {
-        color: var(--text-muted);
-    }
-
-    .alert {
-        border: none;
-        border-radius: var(--border-radius);
-        padding: 16px 20px;
-        margin-bottom: 20px;
-    }
-
-    .alert-danger {
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.2);
-    }
-
-    .row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .card {
-            padding: 25px;
-            margin: 0;
-        }
-        
-        .form-actions {
-            flex-direction: column;
-        }
-        
-        .btn {
-            width: 100%;
-            justify-content: center;
-        }
-        
-        .row {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
+<?php echo $__env->make('admin.works.styles', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('admin.layouts.master', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Shahm.s\Desktop\MyPortfilio\laravel\resources\views/admin/works/create.blade.php ENDPATH**/ ?>
